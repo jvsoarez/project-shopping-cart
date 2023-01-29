@@ -42,7 +42,7 @@ function createCartItemElement({ sku, name, salePrice }) {
 
 async function listProducts() {
   const sectionClassItems = document.querySelector('.items');
-  const computersArray = await fetchProducts();
+  const computersArray = await fetchProducts('computador');
   computersArray.forEach(({ id, title, thumbnail }) => {
   const computerObject = {
     sku: id,
