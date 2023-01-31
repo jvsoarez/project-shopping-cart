@@ -1,3 +1,5 @@
+const CLASS_ORDERED_LIST = '.cart__items';
+
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -29,9 +31,16 @@ function getSkuFromProductItem(item) {
 }
 
 function cartItemClickListener(event) {
-  const ol = document.querySelector('.cart__items');
+  const ol = document.querySelector(CLASS_ORDERED_LIST);
   const element = event.target;
   ol.removeChild(element);
+  const savedItems = getSavedCartItems();
+  const filteredList = savedItems.filter((item) => {
+    const [item1] = element.innerText.split(' | ');
+    const sku = item1.split(': ').pop();
+    return !item.includes(sku);
+  }); 
+  localStorage.setItem('cartItems', JSON.stringify(filteredList));
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -42,22 +51,29 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
-async function addItemToCart() {
+function addItemToCart() {
   const buttons = document.querySelectorAll('.item__add');
-  const ol = document.querySelector('.cart__items');
+  const ol = document.querySelector(CLASS_ORDERED_LIST);
   buttons.forEach((btn) => {
     btn.addEventListener('click', async () => {
       const productId = btn.previousElementSibling.previousElementSibling
         .previousElementSibling.innerText;
       const { id, title, price } = await fetchItem(productId);
-      ol.appendChild(createCartItemElement({ sku: id, name: title, salePrice: price }));
+      const li = createCartItemElement({ sku: id, name: title, salePrice: price });
+      ol.appendChild(li);
+      saveCartItems(li);
     });
   });
 }
 
 async function listProducts() {
   const sectionClassItems = document.querySelector('.items');
+  const createSpan = document.createElement('span');
+  createSpan.setAttribute('class', 'loading');
+  createSpan.innerText = 'carregando...';
+  sectionClassItems.appendChild(createSpan);
   const computersArray = await fetchProducts('computador');
+  sectionClassItems.removeChild(createSpan);
   computersArray.forEach(({ id, title, thumbnail }) => {
   const computerObject = {
     sku: id,
@@ -66,9 +82,23 @@ async function listProducts() {
   };
   sectionClassItems.appendChild(createProductItemElement(computerObject));
   });
-  addItemToCart();
 }
 
-window.onload = () => { 
-  listProducts();
+function createCartItemFromStorage() {
+  const savedItems = getSavedCartItems();
+  const ol = document.querySelector(CLASS_ORDERED_LIST);
+  savedItems.forEach((item) => {
+    const [item1, item2, item3] = item.split(' | ');
+    const sku = item1.split(': ').pop();
+    const name = item2.split(': ').pop();
+    const salePrice = item3.split(': ').pop();
+    const createItem = createCartItemElement({ sku, name, salePrice });
+    ol.appendChild(createItem);
+  });
+}
+
+window.onload = async () => {
+  await listProducts();
+  createCartItemFromStorage();
+  addItemToCart();
 };
