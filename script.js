@@ -30,11 +30,21 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
+function savedItemsFromStorage() {
+  if (getSavedCartItems() === []) return [];
+  const savedItems = JSON.parse(getSavedCartItems());
+  const arr = [];
+  savedItems.forEach((item) => {
+    arr.push(item.replace('$', ''));
+  });
+  return arr;
+}
+
 function cartItemClickListener(event) {
   const ol = document.querySelector(CLASS_ORDERED_LIST);
   const element = event.target;
   ol.removeChild(element);
-  const savedItems = getSavedCartItems();
+  const savedItems = savedItemsFromStorage();
   const filteredList = savedItems.filter((item) => {
     const [item1] = element.innerText.split(' | ');
     const sku = item1.split(': ').pop();
@@ -61,7 +71,7 @@ function addItemToCart() {
       const { id, title, price } = await fetchItem(productId);
       const li = createCartItemElement({ sku: id, name: title, salePrice: price });
       ol.appendChild(li);
-      saveCartItems(li);
+      saveCartItems(li.innerText, savedItemsFromStorage());
     });
   });
 }
@@ -85,7 +95,7 @@ async function listProducts() {
 }
 
 function createCartItemFromStorage() {
-  const savedItems = getSavedCartItems();
+  const savedItems = savedItemsFromStorage();
   const ol = document.querySelector(CLASS_ORDERED_LIST);
   savedItems.forEach((item) => {
     const [item1, item2, item3] = item.split(' | ');
