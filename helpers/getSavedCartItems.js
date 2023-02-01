@@ -1,10 +1,6 @@
 const getSavedCartItems = () => {
-  const itemArray = JSON.parse(localStorage.getItem('cartItems')) || [];
-  const arr = [];
-  itemArray.forEach((item) => {
-    arr.push(item.replace('$', ''));
-  });
-  return arr;
+  const itemArray = localStorage.getItem('cartItems') || [];
+  return itemArray;
 };
 
 if (typeof module !== 'undefined') {
