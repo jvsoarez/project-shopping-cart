@@ -31,8 +31,8 @@ function getSkuFromProductItem(item) {
 }
 
 function savedItemsFromStorage() {
-  if (getSavedCartItems() === []) return [];
-  const savedItems = JSON.parse(getSavedCartItems());
+  const savedItemsArray = getSavedCartItems();
+  const savedItems = JSON.parse(savedItemsArray);
   const arr = [];
   savedItems.forEach((item) => {
     arr.push(item.replace('$', ''));
@@ -109,6 +109,6 @@ function createCartItemFromStorage() {
 
 window.onload = async () => {
   await listProducts();
-  createCartItemFromStorage();
   addItemToCart();
+  createCartItemFromStorage();
 };
