@@ -107,8 +107,22 @@ function createCartItemFromStorage() {
   });
 }
 
+function emptyCartEvent() {
+  const emptyCartButton = document.querySelector('.empty-cart');
+  const ol = document.querySelector(CLASS_ORDERED_LIST);
+  const savedItems = savedItemsFromStorage();
+  emptyCartButton.addEventListener('click', () => {
+    ol.innerText = '';
+    if (savedItems.length > 0) {
+      savedItems.splice(0);
+    }
+    localStorage.setItem('cartItems', JSON.stringify(savedItems));
+  });
+}
+
 window.onload = async () => {
   await listProducts();
   addItemToCart();
   createCartItemFromStorage();
+  emptyCartEvent();
 };
