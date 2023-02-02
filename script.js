@@ -40,6 +40,21 @@ function savedItemsFromStorage() {
   return arr;
 }
 
+function sumItemsCartPrice() {
+  const tagPrice = document.querySelector('.total-price');
+  const priceArray = [];
+  let sum = 0;
+  const savedItems = savedItemsFromStorage();
+  savedItems.forEach((item) => {
+    const partsOfTheItem = item.split(' | ');
+    const itemPrice = partsOfTheItem[2].split(': ').pop();
+    priceArray.push(Number(itemPrice));
+    sum = priceArray.reduce((count, price) => count + price, 0);
+  });
+  // const formatedSum = sum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  tagPrice.innerText = sum;
+}
+
 function cartItemClickListener(event) {
   const ol = document.querySelector(CLASS_ORDERED_LIST);
   const element = event.target;
@@ -51,6 +66,7 @@ function cartItemClickListener(event) {
     return !item.includes(sku);
   }); 
   localStorage.setItem('cartItems', JSON.stringify(filteredList));
+  sumItemsCartPrice();
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -72,6 +88,7 @@ function addItemToCart() {
       const li = createCartItemElement({ sku: id, name: title, salePrice: price });
       ol.appendChild(li);
       saveCartItems(li.innerText, savedItemsFromStorage());
+      sumItemsCartPrice();
     });
   });
 }
@@ -104,6 +121,7 @@ function createCartItemFromStorage() {
     const salePrice = item3.split(': ').pop();
     const createItem = createCartItemElement({ sku, name, salePrice });
     ol.appendChild(createItem);
+    sumItemsCartPrice();
   });
 }
 
@@ -117,6 +135,7 @@ function emptyCartEvent() {
       savedItems.splice(0);
     }
     localStorage.setItem('cartItems', JSON.stringify(savedItems));
+    sumItemsCartPrice();
   });
 }
 
