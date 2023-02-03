@@ -26,9 +26,9 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
-function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
-}
+// function getSkuFromProductItem(item) {
+//   return item.querySelector('span.item__sku').innerText;
+// }
 
 function savedItemsFromStorage() {
   const savedItemsArray = getSavedCartItems();
@@ -51,8 +51,8 @@ function sumItemsCartPrice() {
     priceArray.push(Number(itemPrice));
     sum = priceArray.reduce((count, price) => count + price, 0);
   });
-  // const formatedSum = sum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  tagPrice.innerText = sum;
+  const formatedSum = sum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  tagPrice.innerText = `Total: ${formatedSum}`;
 }
 
 function cartItemClickListener(event) {
