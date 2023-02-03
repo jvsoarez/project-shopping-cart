@@ -3,6 +3,4 @@ const getSavedCartItems = () => {
   return itemArray;
 };
 
-if (typeof module !== 'undefined') {
-  module.exports = getSavedCartItems;
-}
+export default getSavedCartItems;

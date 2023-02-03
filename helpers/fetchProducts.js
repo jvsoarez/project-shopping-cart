@@ -8,8 +8,4 @@ const fetchProducts = async (query) => {
   return results;
 };
 
-if (typeof module !== 'undefined') {
-  module.exports = {
-    fetchProducts,
-  };
-}
+export default fetchProducts;

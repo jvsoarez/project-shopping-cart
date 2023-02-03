@@ -5,8 +5,4 @@ const fetchItem = async (itemId) => {
   return data;
 };
 
-if (typeof module !== 'undefined') {
-  module.exports = {
-    fetchItem,
-  };
-}
+export default fetchItem;
