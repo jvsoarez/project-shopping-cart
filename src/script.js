@@ -1,3 +1,8 @@
+import fetchProducts from '../helpers/fetchProducts';
+import fetchItem from '../helpers/fetchItem';
+import getSavedCartItems from '../helpers/getSavedCartItems';
+import saveCartItems from '../helpers/saveCartItems';
+
 const CLASS_ORDERED_LIST = '.cart__items';
 
 function createProductImageElement(imageSource) {
