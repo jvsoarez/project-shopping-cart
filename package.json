@@ -4,6 +4,8 @@
   "description": "Você já usa o GitHub diariamente para desenvolver os exercícios, certo? Agora, para desenvolver os projetos, você deverá seguir as instruções a seguir. Fique atento a cada passo, e se tiver qualquer dúvida, nos envie por _Slack_! #vqv 🚀",
   "main": "script.js",
   "scripts": {
+    "dev": "vite --open",
+    "build": "vite build",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "cypress": "cypress run",
@@ -44,6 +46,7 @@
     "mochawesome-merge": "4.0.3",
     "mochawesome-report-generator": "4.1.0",
     "stylelint": "13.8.0",
-    "stylelint-config-standard": "20.0.0"
+    "stylelint-config-standard": "20.0.0",
+    "vite": "^4.1.1"
   }
 }
